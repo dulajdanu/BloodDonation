@@ -120,8 +120,7 @@ public class RequestActivity extends AppCompatActivity {
                                                 }, new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                Toast toast = Toast.makeText(context, "post doesnt send"+error, Toast.LENGTH_LONG);
-                                                toast.show();
+                                                Log.e("RequestActivity",error.getMessage());
                                             }
                                         }) {
                                             @Override
