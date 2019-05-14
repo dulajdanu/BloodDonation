@@ -1,5 +1,7 @@
 package com.example.blooddonation;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,7 +73,8 @@ public class  Profile extends AppCompatActivity
                 });
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
+        SharedPreferences sharedPref = getSharedPreferences("MyPrefs",Context.MODE_PRIVATE);
+        String email= sharedPref.getString("email", null);
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
 

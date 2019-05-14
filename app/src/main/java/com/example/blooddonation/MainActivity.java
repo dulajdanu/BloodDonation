@@ -119,8 +119,8 @@ public class MainActivity extends AppCompatActivity
 
         if(emailAddressChecker)
         {
-//            SharedPreferences.Editor editor =  getSharedPreferences("MyPrefs",MODE_PRIVATE).edit();
-//            editor.putString("email",email);+
+            SharedPreferences.Editor editor =  getSharedPreferences("MyPrefs",MODE_PRIVATE).edit();
+            editor.putString("email",email);
             MyApplication myapp = (MyApplication)getApplication();
             myapp.setData(email);
             startActivity(new Intent(MainActivity.this,Home.class));
@@ -128,8 +128,9 @@ public class MainActivity extends AppCompatActivity
         else
         {
             Toast.makeText(MainActivity.this, "Please Verify Your Account", Toast.LENGTH_SHORT).show();
-//            SharedPreferences.Editor editor =  getSharedPreferences("MyPrefs",MODE_PRIVATE).edit();
-//            editor.putString("email",email);
+            SharedPreferences.Editor editor =  getSharedPreferences("MyPrefs",MODE_PRIVATE).edit();
+            editor.putString("email",email);
+            editor.commit();
             //StoredMail = email;
             user.sendEmailVerification();
 //            saveData.save(getApplicationContext(),"email",email);
