@@ -25,6 +25,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Arrays;
 
 public class  Profile extends AppCompatActivity
 {
@@ -33,6 +35,7 @@ public class  Profile extends AppCompatActivity
     private DatabaseReference settingsUserRef;
     private FirebaseAuth mAuth;
     private String currentUserId;
+    private int numbOfPart;
 
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -43,6 +46,10 @@ public class  Profile extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        MyApplication myapp = (MyApplication)getApplication();
+//        myapp.setData(80);
+        String val = myapp.getData();
+
 
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -78,7 +85,7 @@ public class  Profile extends AppCompatActivity
         etContact2 = (EditText)findViewById(R.id.etContact2);
         btnSave = (Button)findViewById(R.id.btnSave);
 
-
+        etBloodGroup.setText(val);
          btnSave.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -92,7 +99,9 @@ public class  Profile extends AppCompatActivity
                  if(dataSnapshot.exists())
                  {
                      String username = dataSnapshot.child("fullname").getValue().toString();
+                     String bld = dataSnapshot.child("bloodgroup").getValue().toString();
                      etFullName.setText(username);
+                     etBloodGroup.setText(bld);
                  }
 
 
@@ -115,13 +124,16 @@ public class  Profile extends AppCompatActivity
         String address = etAddress.getText().toString();
         String contact1 = etContact1.getText().toString();
         String contact2 = etContact2.getText().toString();
+
         if(TextUtils.isEmpty(fullname))
         {
-            etFullName.setError("Lol");
+            etFullName.setError("enter your full name");
         }
         else
         {
             UpdateInfo(fullname,dob,bloodgroup,address,contact1,contact2);
+            etAddress.setText("paka");
+
         }
     }
 
@@ -135,6 +147,20 @@ public class  Profile extends AppCompatActivity
         userMap.put("contact1",contact1);
         userMap.put("contact2",contact2);
         userMap.put("device_token",tokenDev);
+
+//        Map<String, Object> docData = new HashMap<>();
+//        docData.put("name", "Los Angeles");
+//        docData.put("state", "CA");
+//        docData.put("country", "USA");
+//        docData.put("regions", Arrays.asList("west_coast", "socal"));
+//// Add a new document (asynchronously) in collection "cities" with id "LA"
+//        ApiFuture<WriteResult> future = db.collection("Users").document("LA").set(docData);
+//// ...
+//// future.get() blocks on response
+////        System.out.println("Update time : " + future.get().getUpdateTime());
+//
+//
+
 
 
         db.collection("Users").document().set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {

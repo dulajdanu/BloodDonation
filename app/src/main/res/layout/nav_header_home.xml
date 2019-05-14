@@ -27,4 +27,10 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
+    <Button
+        android:id="@+id/usrName"
+        android:layout_width="149dp"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
 </LinearLayout>

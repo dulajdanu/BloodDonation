@@ -1,6 +1,7 @@
 package com.example.blooddonation;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.blooddonation.Service.saveData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity
     private EditText etName,etPassword;
     private FirebaseAuth mAuth;
     private Boolean emailAddressChecker;
+    private String email;
+    private   String StoredMail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,9 +61,11 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+
+
     private void AccountLogin()
     {
-        String email = etName.getText().toString();
+        email = etName.getText().toString();
         String password = etPassword.getText().toString();
 
         if(TextUtils.isEmpty(email))
@@ -84,6 +90,8 @@ public class MainActivity extends AppCompatActivity
                        //finish();
 
                         VerifyEmailAddress();
+
+
                     }
                     else
                     {
@@ -111,12 +119,21 @@ public class MainActivity extends AppCompatActivity
 
         if(emailAddressChecker)
         {
+//            SharedPreferences.Editor editor =  getSharedPreferences("MyPrefs",MODE_PRIVATE).edit();
+//            editor.putString("email",email);+
+            MyApplication myapp = (MyApplication)getApplication();
+            myapp.setData(email);
             startActivity(new Intent(MainActivity.this,Home.class));
         }
         else
         {
             Toast.makeText(MainActivity.this, "Please Verify Your Account", Toast.LENGTH_SHORT).show();
-            mAuth.signOut();
+//            SharedPreferences.Editor editor =  getSharedPreferences("MyPrefs",MODE_PRIVATE).edit();
+//            editor.putString("email",email);
+            //StoredMail = email;
+            user.sendEmailVerification();
+//            saveData.save(getApplicationContext(),"email",email);
+            //mAuth.signOut();
         }
     }
 }

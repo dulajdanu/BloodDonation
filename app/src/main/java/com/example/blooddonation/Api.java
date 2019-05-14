@@ -9,7 +9,7 @@ import retrofit2.http.POST;
 public interface Api {
 
     @FormUrlEncoded
-    @POST("push_notication")
+    @POST("push_notification")
     Call<ResponseBody>sendPushMsg(
             @Field("devicetoken") String devToken
     );

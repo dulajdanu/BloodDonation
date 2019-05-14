@@ -197,7 +197,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(new Intent(Home.this,AddNewPost.class));
             finish();
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.Completed) {
+
+            startActivity(new Intent(Home.this,completedActi.class));
+            finish();
+
 
         } else if (id == R.id.nav_share) {
 
