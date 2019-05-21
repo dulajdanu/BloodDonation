@@ -121,8 +121,8 @@ public class MainActivity extends AppCompatActivity
         {
             SharedPreferences.Editor editor =  getSharedPreferences("MyPrefs",MODE_PRIVATE).edit();
             editor.putString("email",email);
-            MyApplication myapp = (MyApplication)getApplication();
-            myapp.setData(email);
+            editor.commit();
+
             startActivity(new Intent(MainActivity.this,Home.class));
         }
         else
@@ -133,6 +133,9 @@ public class MainActivity extends AppCompatActivity
             editor.commit();
             //StoredMail = email;
             user.sendEmailVerification();
+            Toast.makeText(MainActivity.this, "Account Verified", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this,Home.class));
+
 //            saveData.save(getApplicationContext(),"email",email);
             //mAuth.signOut();
         }

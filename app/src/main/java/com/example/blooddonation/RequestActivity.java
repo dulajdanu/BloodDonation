@@ -27,7 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.*;
 /*
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -38,7 +38,7 @@ import retrofit2.Response;
 public class RequestActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
-
+    ArrayList<String> Bldlist=new ArrayList<String>();
 //    SharedPreferences prefs = getSharedPreferences("MyPrefs",MODE_PRIVATE);
     String storedUsrMail ;
     String storedNum;
@@ -52,10 +52,10 @@ public class RequestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request);
 
 //        storedUsrMail = String.valueOf(saveData.read(getApplicationContext(),"email",""));
-        MyApplication myapp = (MyApplication)getApplication();
-//        myapp.setData(80);
-        String val = myapp.getData();
-        System.out.println("This is the val" + val);
+//        MyApplication myapp = (MyApplication)getApplication();
+////        myapp.setData(80);
+//        String val = myapp.getData();
+//        System.out.println("This is the val" + val);
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -72,56 +72,96 @@ public class RequestActivity extends AppCompatActivity {
         Apositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findUsers("A+", getApplicationContext());
+                Bldlist.add("O-");
+                Bldlist.add("O+");
+                Bldlist.add("A-");
+                Bldlist.add("A+");
+                findUsers(Bldlist, getApplicationContext());
+                Bldlist.clear();
             }
         });
 
         Anegative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findUsers("A-", getApplicationContext());
+                Bldlist.add("O-");
+                Bldlist.add("A-");
+
+                findUsers(Bldlist, getApplicationContext());
+                Bldlist.clear();
+
             }
         });
         Bpositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findUsers("B+", getApplicationContext());
+                Bldlist.add("O-");
+                Bldlist.add("O+");
+                Bldlist.add("B+");
+
+                Bldlist.add("B-");
+                findUsers(Bldlist, getApplicationContext());
+                Bldlist.clear();
             }
         });
         Bnegative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findUsers("B-", getApplicationContext());
+                Bldlist.add("O-");
+                Bldlist.add("B-");
+                findUsers(Bldlist, getApplicationContext());
+                Bldlist.clear();
             }
         });
         Opositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findUsers("O+", getApplicationContext());
+                Bldlist.add("O-");
+                Bldlist.add("O+");
+                findUsers(Bldlist, getApplicationContext());
+                Bldlist.clear();
             }
         });
         Onegative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findUsers("O-", getApplicationContext());
+                Bldlist.add("O-");
+
+                findUsers(Bldlist, getApplicationContext());
+                Bldlist.clear();
             }
         });
         ABpositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findUsers("AB+", getApplicationContext());
+                Bldlist.add("O-");
+                Bldlist.add("O+");
+                Bldlist.add("B+");
+                Bldlist.add("B-");
+                Bldlist.add("A-");
+                Bldlist.add("A+");
+                Bldlist.add("AB+");
+                Bldlist.add("AB-");
+                findUsers(Bldlist, getApplicationContext());
+                Bldlist.clear();
             }
         });
         ABnegative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findUsers("AB-", getApplicationContext());
+                Bldlist.add("O-");
+                Bldlist.add("B-");
+                Bldlist.add("A-");
+
+                Bldlist.add("AB-");
+                findUsers(Bldlist, getApplicationContext());
+                Bldlist.clear();
             }
         });
 
     }
 
-    public void findUsers(final String BloodType, final Context context) {
+    public void findUsers(final List<String>bldList, final Context context) {
 
         /*String url = "http://192.168.1.101/BloodDonation/push_notication.php";
 
@@ -157,45 +197,46 @@ public class RequestActivity extends AppCompatActivity {
                                 String bloodType = ds.getString("bloodgroup");
                                 if (bloodType != null) {
 
-//                                    Toast toast = Toast.makeText(context, "blood type found", Toast.LENGTH_SHORT);
-//                                    toast.show();
 
-                                    if (bloodType.equals(BloodType)) {
-                                        final String deviceTkn = ds.getString("device_token");
-                                        final String fullName  = ds.getString("fullname");
-                                        final String contactNum = ds.getString("contact1");
-                                        //final String patientName = ds.getString("fullname");
-                                        RequestQueue queue = Volley.newRequestQueue(context);
-                                        String url = "http://192.168.1.102/BloodDonation/push_notification.php";
-                                        // Request a string response from the provided URL.
-                                        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                                                new Response.Listener<String>() {
-                                                    @Override
-                                                    public void onResponse(String response) {
-                                                        // Display the first 500 characters of the response string.
-                                                        //textView.setText("Response is: "+ response.substring(0,500));
-                                                        Log.i("RequestActivity",response);
-                                                    }
-                                                }, new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error) {
-                                                //Log.e("RequestActivity",error.getMessage());
-                                            }
-                                        }) {
-                                            @Override
-                                            protected Map<String, String> getParams() {
-                                                Map<String, String> params = new HashMap<String, String>();
-                                                params.put("token", deviceTkn);
-                                                String body = "The patient " + fullName + " needs your blood . This is the contact number" + contactNum;
-                                                params.put("body",body);
-                                                return params;
-                                            }
-                                        };
+                                    for (String bld : bldList) {
+                                        if (bloodType.equals(bld)) {
+                                            Toast toast = Toast.makeText(context, "blood type found", Toast.LENGTH_SHORT);
+                                            toast.show();
+                                            final String deviceTkn = ds.getString("device_token");
+                                            final String fullName = ds.getString("fullname");
+                                            final String contactNum = ds.getString("contact1");
+                                            //final String patientName = ds.getString("fullname");
+                                            RequestQueue queue = Volley.newRequestQueue(context);
+                                            String url = "http://192.168.1.102/BloodDonation/push_notification.php";
+                                            // Request a string response from the provided URL.
+                                            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                                                    new Response.Listener<String>() {
+                                                        @Override
+                                                        public void onResponse(String response) {
+                                                            // Display the first 500 characters of the response string.
+                                                            //textView.setText("Response is: "+ response.substring(0,500));
+                                                            Log.i("RequestActivity", response);
+                                                        }
+                                                    }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    //Log.e("RequestActivity",error.getMessage());
+                                                }
+                                            }) {
+                                                @Override
+                                                protected Map<String, String> getParams() {
+                                                    Map<String, String> params = new HashMap<String, String>();
+                                                    params.put("token", deviceTkn);
+                                                    String body = "The patient " + fullName + " needs your blood . This is the contact number" + contactNum;
+                                                    params.put("body", body);
+                                                    return params;
+                                                }
+                                            };
 
-                                        // Add the request to the RequestQueue.
-                                        queue.add(stringRequest);
+                                            // Add the request to the RequestQueue.
+                                            queue.add(stringRequest);
+                                        }
                                     }
-
                                 }
                             }
                         }

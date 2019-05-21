@@ -61,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/MonthVal"
         android:layout_width="wrap_content"
         android:layout_height="26dp"
         android:layout_marginStart="8dp"
@@ -81,7 +81,7 @@
         app:layout_constraintVertical_bias="0.462" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/totVal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

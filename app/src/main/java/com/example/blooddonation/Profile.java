@@ -11,6 +11,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,18 +40,21 @@ public class  Profile extends AppCompatActivity
     private String currentUserId;
     private int numbOfPart;
 
+    private TextView mail;
+
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    final FirebaseFirestore dbnew = FirebaseFirestore.getInstance();
 
 
+    HashMap userMap = new HashMap();
+    String usrMail = "";
 
 
     private String tokenDev;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        MyApplication myapp = (MyApplication)getApplication();
-//        myapp.setData(80);
-        String val = myapp.getData();
+
 
 
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -75,6 +79,12 @@ public class  Profile extends AppCompatActivity
         setContentView(R.layout.activity_profile);
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs",Context.MODE_PRIVATE);
         String email= sharedPref.getString("email", null);
+        usrMail = email;
+        userMap.put("email",email);
+
+        mail = findViewById(R.id.emailUSr);
+        mail.setText(usrMail);
+
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
 
@@ -88,7 +98,6 @@ public class  Profile extends AppCompatActivity
         etContact2 = (EditText)findViewById(R.id.etContact2);
         btnSave = (Button)findViewById(R.id.btnSave);
 
-        etBloodGroup.setText(val);
          btnSave.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -103,8 +112,8 @@ public class  Profile extends AppCompatActivity
                  {
                      String username = dataSnapshot.child("fullname").getValue().toString();
                      String bld = dataSnapshot.child("bloodgroup").getValue().toString();
-                     etFullName.setText(username);
-                     etBloodGroup.setText(bld);
+//                     etFullName.setText(username);
+//                     etBloodGroup.setText(bld);
                  }
 
 
@@ -135,14 +144,12 @@ public class  Profile extends AppCompatActivity
         else
         {
             UpdateInfo(fullname,dob,bloodgroup,address,contact1,contact2);
-            etAddress.setText("paka");
 
         }
     }
 
     private void UpdateInfo(String fullname, String dob, String bloodgroup, String address, String contact1, String contact2)
     {
-        HashMap userMap = new HashMap();
         userMap.put("fullname",fullname);
         userMap.put("Dob",dob);
         userMap.put("bloodgroup",bloodgroup);
@@ -150,6 +157,10 @@ public class  Profile extends AppCompatActivity
         userMap.put("contact1",contact1);
         userMap.put("contact2",contact2);
         userMap.put("device_token",tokenDev);
+        userMap.put("noMonth","0");
+        userMap.put("noTotal","0");
+
+
 
 //        Map<String, Object> docData = new HashMap<>();
 //        docData.put("name", "Los Angeles");
@@ -166,7 +177,7 @@ public class  Profile extends AppCompatActivity
 
 
 
-        db.collection("Users").document().set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Users").document(usrMail).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(Profile.this,"details updated",Toast.LENGTH_LONG).show();
